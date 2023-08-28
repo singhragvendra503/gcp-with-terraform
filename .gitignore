@@ -1,0 +1,6 @@
+*.json
+.terraform
+.terraform.lock.hcl
+terraform.tfstate.*
+terraform.tfstate
+staging/modules/
