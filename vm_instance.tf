@@ -10,7 +10,7 @@ terraform {
 provider "google" {
   project     = "terraform-gcp-provider"
   region      = "us-west1"
-  credentials = file("terraform-gcp-provider-319304c6a647.json")
+  credentials = file("terraform-gcp-provider-64fbb35e93e3.json")
 }
 resource "google_compute_network" "vpc_network" {
   name                    = "my-custom-mode-network"
@@ -25,6 +25,17 @@ resource "google_compute_subnetwork" "default" {
   network       = google_compute_network.vpc_network.self_link
 }
 
+resource "google_compute_firewall" "all_deny" {
+  name    = "all-deny"
+  network = google_compute_network.vpc_network.name
+
+  deny {
+    protocol = "all"
+  }
+  priority = "1000"
+  source_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_firewall" "allow_ssh" {
   name    = "allow-ssh"
   network = google_compute_network.vpc_network.name
@@ -33,7 +44,7 @@ resource "google_compute_firewall" "allow_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
-
+  priority = "999"
   source_ranges = ["0.0.0.0/0"]
 }
 resource "google_compute_instance" "default" {
@@ -48,7 +59,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       labels = {
         my_label = "value"
       }
@@ -61,4 +72,7 @@ resource "google_compute_instance" "default" {
 
     }
   }
+}
+output "this" {
+  value = google_compute_instance.default.network_interface
 }
