@@ -49,7 +49,7 @@ resource "google_compute_firewall" "allow_ssh" {
 }
 resource "google_compute_instance" "default" {
   name         = "test"
-  machine_type = "e2-medium"
+  machine_type = "e2-micro"
   zone         = "us-west1-a"
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
@@ -75,5 +75,5 @@ resource "google_compute_instance" "default" {
   }
 }
 output "this" {
-  value = google_compute_instance.default.network_interface
+  value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
 }
