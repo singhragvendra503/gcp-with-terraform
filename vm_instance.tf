@@ -55,11 +55,12 @@ resource "google_compute_instance" "default" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 
-  tags = ["foo", "bar"]
+  tags = ["demo", "staging"]
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+      size = 50
       labels = {
         my_label = "value"
       }

@@ -36,12 +36,13 @@ The `provider` block specifies the GCP project, region, and authentication crede
 
 ### Compute Instance Boot Disk
 
-The `boot_disk` block in the `google_compute_instance` resource configuration is responsible for specifying the image to be used for the virtual machine's boot disk. In this case, the image is defined as follows:
+The `boot_disk` block in the `google_compute_instance` resource configuration is responsible for specifying the image to be used for the virtual machine's boot disk and we can provide boot disk size as our requirement. In this case, the image is defined as follows:
 
 ```hcl
 boot_disk {
   initialize_params {
     image = "ubuntu-os-cloud/ubuntu-2204-lts"
+    size = 50
     labels = {
       my_label = "value"
     }
